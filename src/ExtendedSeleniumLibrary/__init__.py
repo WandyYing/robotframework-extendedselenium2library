@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Extended Selenium2 Library - a web testing library with AngularJS support.
+#    Extended Selenium 3 Library - a web testing library with AngularJS support.
 #    Copyright (c) 2015, 2016 Richard Huang <rickypc@users.noreply.github.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,34 +18,35 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Extended Selenium2 Library - a web testing library with AngularJS support.
+Extended Selenium 3 Library - a web testing library with AngularJS support.
 """
 
 from robot.libraries.BuiltIn import BuiltIn
-from Selenium2Library import Selenium2Library
-from ExtendedSelenium2Library.decorators import inherit_docs
-from ExtendedSelenium2Library.keywords import ExtendedElementKeywords
-from ExtendedSelenium2Library.keywords import ExtendedFormElementKeywords
-from ExtendedSelenium2Library.keywords import ExtendedJavascriptKeywords
-from ExtendedSelenium2Library.keywords import ExtendedSelectElementKeywords
-from ExtendedSelenium2Library.keywords import ExtendedWaitingKeywords
-from ExtendedSelenium2Library.version import get_version
+from SeleniumLibrary import SeleniumLibrary
+from SeleniumLibrary.locators import ElementFinder
+from ExtendedSeleniumLibrary.decorators import inherit_docs
+from ExtendedSeleniumLibrary.keywords import (ExtendedElementKeywords,
+                                             ExtendedFormElementKeywords,
+                                             ExtendedJavascriptKeywords,
+                                             ExtendedSelectElementKeywords,
+                                             ExtendedWaitingKeywords)
+from ExtendedSeleniumLibrary.base.contextpatch import ContextPatch
+
+from ExtendedSeleniumLibrary.version import get_version
 
 __version__ = get_version()
 
 
 # pylint: disable=too-many-ancestors
 @inherit_docs
-class ExtendedSelenium2Library(Selenium2Library, ExtendedElementKeywords,
-                               ExtendedFormElementKeywords, ExtendedJavascriptKeywords,
-                               ExtendedSelectElementKeywords, ExtendedWaitingKeywords):
+class ExtendedSeleniumLibrary(SeleniumLibrary):
     # pylint: disable=line-too-long
-    """ExtendedSelenium2Library is a [http://goo.gl/boVQia|Selenium2 (WebDriver)]
+    """ExtendedSeleniumLibrary is a [http://goo.gl/boVQia|Selenium2 (WebDriver)]
     web testing library with [https://goo.gl/Kzz8Y3|AngularJS] support and
     custom improvement for [http://goo.gl/lES6WM|Robot Framework].
 
-    ExtendedSelenium2Library strives to make the transition from
-    [https://goo.gl/1VXDSI|Selenium2Library] as seamless as possible.
+    ExtendedSeleniumLibrary strives to make the transition from
+    [https://goo.gl/1VXDSI|SeleniumLibrary] as seamless as possible.
     It uses [http://goo.gl/boVQia|Selenium2 (WebDriver)] libraries
     and [https://goo.gl/Kzz8Y3|AngularJS] synchronization internally to control a web browser
     and ensure all the keywords stay in sync with [https://goo.gl/Kzz8Y3|AngularJS] process.
@@ -54,7 +55,7 @@ class ExtendedSelenium2Library(Selenium2Library, ExtendedElementKeywords,
     calling `Wait Until Angular Ready` from within.
     See [http://goo.gl/boVQia|Selenium2 and WebDriver] for more information.
 
-    ExtendedSelenium2Library runs tests in a real browser instance. It should work in
+    ExtendedSeleniumLibrary runs tests in a real browser instance. It should work in
     most modern browsers and can be used with both Python and Jython interpreters.
 
     Non-inherited Keywords:
@@ -89,15 +90,15 @@ class ExtendedSelenium2Library(Selenium2Library, ExtendedElementKeywords,
 
     = Before running tests =
 
-    Prior to running test cases using ExtendedSelenium2Library, ExtendedSelenium2Library must be
+    Prior to running test cases using ExtendedSeleniumLibrary, ExtendedSeleniumLibrary must be
     imported into your Robot test suite (see `importing` section), and the
     `Open Browser` keyword must be used to open a browser to the desired location.
     """
     # pylint: disable=line-too-long
 
     # let's not confuse people with different name and version
-    __doc__ += Selenium2Library.__doc__.split('desired location.', 1)[-1]. \
-        replace('Selenium2Library', 'ExtendedSelenium2Library'). \
+    __doc__ += SeleniumLibrary.__doc__.split('desired location.', 1)[-1]. \
+        replace('SeleniumLibrary', 'ExtendedSeleniumLibrary'). \
         replace('version 1.7', 'version 0.4.9'). \
         replace('Version 1.7.0', 'version 0.4.9')
 
@@ -124,7 +125,7 @@ class ExtendedSelenium2Library(Selenium2Library, ExtendedElementKeywords,
 
     def __init__(self, implicit_wait=15.0, **kwargs):
         # pylint: disable=line-too-long
-        """ExtendedSelenium2Library can be imported with optional arguments.
+        """ExtendedSeleniumLibrary can be imported with optional arguments.
 
         Arguments:
         - ``timeout``: The maximum value to wait for all waiting actions. (Default 5.0)
@@ -137,7 +138,7 @@ class ExtendedSelenium2Library(Selenium2Library, ExtendedElementKeywords,
                              section of the SeleniumHQ documentation for more information about
                              WebDriver's implicit wait functionality.
         - ``run_on_failure``: The name of a keyword (from any available libraries) to execute
-                              when a ExtendedSelenium2Library keyword fails. By default
+                              when a ExtendedSeleniumLibrary keyword fails. By default
                               `Capture Page Screenshot` will be used to take a screenshot of
                               the current page.
                               Using the value "Nothing" will disable this feature altogether.
@@ -156,11 +157,11 @@ class ExtendedSelenium2Library(Selenium2Library, ExtendedElementKeywords,
         - ``poll_frequency``: The delay value in seconds to retry the next step. (Default 0.2)
 
         Examples:
-        | Library `|` ExtendedSelenium2Library `|` 15                                            | # Sets default timeout to 15 seconds                                       |
-        | Library `|` ExtendedSelenium2Library `|` 0 `|` 5                                       | # Sets default timeout to 0 seconds and default implicit_wait to 5 seconds |
-        | Library `|` ExtendedSelenium2Library `|` 5 `|` run_on_failure=Log Source               | # Sets default timeout to 5 seconds and runs `Log Source` on failure       |
-        | Library `|` ExtendedSelenium2Library `|` implicit_wait=5 `|` run_on_failure=Log Source | # Sets default implicit_wait to 5 seconds and runs `Log Source` on failure |
-        | Library `|` ExtendedSelenium2Library `|` timeout=10      `|` run_on_failure=Nothing    | # Sets default timeout to 10 seconds and does nothing on failure           |
+        | Library `|` ExtendedSeleniumLibrary `|` 15                                            | # Sets default timeout to 15 seconds                                       |
+        | Library `|` ExtendedSeleniumLibrary `|` 0 `|` 5                                       | # Sets default timeout to 0 seconds and default implicit_wait to 5 seconds |
+        | Library `|` ExtendedSeleniumLibrary `|` 5 `|` run_on_failure=Log Source               | # Sets default timeout to 5 seconds and runs `Log Source` on failure       |
+        | Library `|` ExtendedSeleniumLibrary `|` implicit_wait=5 `|` run_on_failure=Log Source | # Sets default implicit_wait to 5 seconds and runs `Log Source` on failure |
+        | Library `|` ExtendedSeleniumLibrary `|` timeout=10      `|` run_on_failure=Nothing    | # Sets default timeout to 10 seconds and does nothing on failure           |
         """
         # pylint: disable=line-too-long
         self._inputs = {
@@ -170,16 +171,18 @@ class ExtendedSelenium2Library(Selenium2Library, ExtendedElementKeywords,
             'poll_frequency': float(kwargs.pop('poll_frequency', 0.2)),
         }
         self._builtin = BuiltIn()
-        Selenium2Library.__init__(self, implicit_wait=implicit_wait, **kwargs)
-        ExtendedElementKeywords.__init__(self)
-        ExtendedFormElementKeywords.__init__(self)
-        ExtendedJavascriptKeywords.__init__(self)
-        ExtendedSelectElementKeywords.__init__(self)
-        ExtendedWaitingKeywords.__init__(self)
+        SeleniumLibrary.__init__(self, implicit_wait=implicit_wait, **kwargs)
+        self.add_library_components([ExtendedElementKeywords(self),
+                                     ExtendedFormElementKeywords(self),
+                                     ExtendedJavascriptKeywords(self),
+                                     ExtendedSelectElementKeywords(self),
+                                     ExtendedWaitingKeywords(self)
+                                     ])
         self._implicit_wait_in_secs = float(implicit_wait) if implicit_wait is not None else 15.0
         self._page_ready_keyword_list = []
         # pylint: disable=protected-access
-        self._table_element_finder._element_finder = self._element_finder
+        # self.table_element_finder.element_finder = self.element_finder
+        # self.element_finder = self._element_finder
 
     def get_browser_logs(self):
         """Returns the Javascript console logs from the browser. (Non Internet Explorer only).
@@ -200,17 +203,17 @@ class ExtendedSelenium2Library(Selenium2Library, ExtendedElementKeywords,
                                                timeout=self._implicit_wait_in_secs)['response']
         # retry with sync approach
         if response is None:
-            response = self._current_browser().execute_script('return location.href')
+            response = self.driver().execute_script('return location.href')
         # fallback
         if response is None:
-            response = self._current_browser().get_current_url()
+            response = self.driver().get_current_url()
         return response
 
     # pylint: disable=arguments-differ
     # pylint: disable=too-many-arguments
     def open_browser(self, url, browser='firefox', alias=None, remote_url=False,
                      desired_capabilities=None, ff_profile_dir=None, skip_ready=False):
-        index = super(ExtendedSelenium2Library, self).\
+        index = super(ExtendedSeleniumLibrary, self).\
             open_browser(url, browser, alias, remote_url, desired_capabilities, ff_profile_dir)
         if not skip_ready:
             self._wait_until_page_ready()
@@ -237,3 +240,7 @@ class ExtendedSelenium2Library(Selenium2Library, ExtendedElementKeywords,
         | Remove Page Ready Keyword | My Keyword |
         """
         self._page_ready_keyword_list.remove(keyword_name)
+
+if __name__ == '__main__':
+    sle = ExtendedSeleniumLibrary()
+    print(dir(sle))

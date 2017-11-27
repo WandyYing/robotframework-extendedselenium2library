@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Extended Selenium2 Library - a web testing library with AngularJS support.
+#    Extended Selenium 3 Library - a web testing library with AngularJS support.
 #    Copyright (c) 2015, 2016 Richard Huang <rickypc@users.noreply.github.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,17 +18,19 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Extended Selenium2 Library - a web testing library with AngularJS support.
+Extended Selenium 3 Library - a web testing library with AngularJS support.
 """
 
+from ExtendedSeleniumLibrary.keywords.extendedelement import ExtendedElementKeywords
+from ExtendedSeleniumLibrary.keywords.extendedformelement import ExtendedFormElementKeywords
+from ExtendedSeleniumLibrary.keywords.extendedjavascript import ExtendedJavascriptKeywords
+from ExtendedSeleniumLibrary.keywords.extendedselectelement import ExtendedSelectElementKeywords
+from ExtendedSeleniumLibrary.keywords.extendedwaiting import ExtendedWaitingKeywords
 
-def inherit_docs(cls):
-    """Inherits method docstring from parent method."""
-    for name, func in list(vars(cls).items()):
-        if not func.__doc__:
-            for parent in cls.__bases__:
-                parent_func = getattr(parent, name, None)
-                if parent_func and getattr(parent_func, '__doc__', None):
-                    func.__doc__ = parent_func.__doc__
-                    break
-    return cls
+__all__ = [
+    'ExtendedElementKeywords',
+    'ExtendedFormElementKeywords',
+    'ExtendedJavascriptKeywords',
+    'ExtendedSelectElementKeywords',
+    'ExtendedWaitingKeywords',
+]

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Extended Selenium2 Library - a web testing library with AngularJS support.
+#    Extended Selenium 3 Library - a web testing library with AngularJS support.
 #    Copyright (c) 2015, 2016 Richard Huang <rickypc@users.noreply.github.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,17 +18,17 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Extended Selenium2 Library - a web testing library with AngularJS support.
+Extended Selenium 3 Library - a web testing library with AngularJS support.
 """
 
 from re import sub
-from Selenium2Library.keywords import _JavaScriptKeywords
+from SeleniumLibrary.keywords import JavaScriptKeywords
 
 
-class ExtendedJavascriptKeywords(_JavaScriptKeywords):
+class ExtendedJavascriptKeywords(JavaScriptKeywords):
     """ExtendedJavascriptKeywords are JavaScript related execution in the requested browser."""
-    def __init__(self):
-        super(ExtendedJavascriptKeywords, self).__init__()
+    def __init__(self, ctx):
+        super(ExtendedJavascriptKeywords, self).__init__(ctx)
 
     def execute_async_javascript_with_replaced_variables(self, *code):
         # pylint: disable=line-too-long

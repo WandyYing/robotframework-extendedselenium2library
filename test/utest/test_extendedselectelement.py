@@ -24,9 +24,9 @@ Extended Selenium2 Library - a web testing library with AngularJS support.
 from sys import path
 path.append('src')
 import unittest
-import mock
-from ExtendedSelenium2Library.keywords import ExtendedSelectElementKeywords
-from Selenium2Library.keywords import _SelectElementKeywords
+from unittest import mock
+from ExtendedSeleniumLibrary.keywords import ExtendedSelectElementKeywords
+from SeleniumLibrary.keywords import SelectElementKeywords
 
 
 class ExtendedSelectElementTests(unittest.TestCase):
@@ -34,7 +34,8 @@ class ExtendedSelectElementTests(unittest.TestCase):
 
     def setUp(self):
         """Instantiate the extended select element class."""
-        self.element = ExtendedSelectElementKeywords()
+        ctx = mock.Mock()
+        self.element = ExtendedSelectElementKeywords(ctx)
         self.indexes = (1, 2, 3, 4, 5)
         self.items = ('1', '2', '3', '4', '5')
         self.labels = ('1', '2', '3', '4', '5')
@@ -43,10 +44,10 @@ class ExtendedSelectElementTests(unittest.TestCase):
 
     def test_should_inherit_keywords(self):
         """Extended select element instance should inherit Selenium2 select element instances."""
-        self.assertIsInstance(self.element, _SelectElementKeywords)
+        self.assertIsInstance(self.element, SelectElementKeywords)
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedselectelement."
-                "_SelectElementKeywords.select_all_from_list")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedselectelement."
+                "SelectElementKeywords.select_all_from_list")
     def test_should_select_all_from_list(self, mock_select_all_from_list):
         """Should select all option items from list."""
         # pylint: disable=protected-access
@@ -55,8 +56,8 @@ class ExtendedSelectElementTests(unittest.TestCase):
         mock_select_all_from_list.assert_called_with(self.locator)
         self.element._element_trigger_change.assert_called_with(self.locator)
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedselectelement."
-                "_SelectElementKeywords.select_from_list")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedselectelement."
+                "SelectElementKeywords.select_from_list")
     def test_should_select_from_list(self, mock_select_from_list):
         """Should select option items from list by item."""
         # pylint: disable=protected-access
@@ -65,8 +66,8 @@ class ExtendedSelectElementTests(unittest.TestCase):
         mock_select_from_list.assert_called_with(self.locator, self.items)
         self.element._element_trigger_change.assert_called_with(self.locator)
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedselectelement."
-                "_SelectElementKeywords.select_from_list_by_index")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedselectelement."
+                "SelectElementKeywords.select_from_list_by_index")
     def test_should_select_from_list_by_index(self, mock_select_from_list_by_index):
         """Should select option items from list by index."""
         # pylint: disable=protected-access
@@ -75,8 +76,8 @@ class ExtendedSelectElementTests(unittest.TestCase):
         mock_select_from_list_by_index.assert_called_with(self.locator, self.indexes)
         self.element._element_trigger_change.assert_called_with(self.locator)
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedselectelement."
-                "_SelectElementKeywords.select_from_list_by_label")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedselectelement."
+                "SelectElementKeywords.select_from_list_by_label")
     def test_should_select_from_list_by_label(self, mock_select_from_list_by_label):
         """Should select option items from list by label."""
         # pylint: disable=protected-access
@@ -85,8 +86,8 @@ class ExtendedSelectElementTests(unittest.TestCase):
         mock_select_from_list_by_label.assert_called_with(self.locator, self.labels)
         self.element._element_trigger_change.assert_called_with(self.locator)
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedselectelement."
-                "_SelectElementKeywords.select_from_list_by_value")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedselectelement."
+                "SelectElementKeywords.select_from_list_by_value")
     def test_should_select_from_list_by_value(self, mock_select_from_list_by_value):
         """Should select option items from list by value."""
         # pylint: disable=protected-access

@@ -24,10 +24,10 @@ Extended Selenium2 Library - a web testing library with AngularJS support.
 from sys import path
 path.append('src')
 import unittest
-import mock
-from ExtendedSelenium2Library.keywords import ExtendedFormElementKeywords
+from unittest import mock
+from ExtendedSeleniumLibrary.keywords import ExtendedFormElementKeywords
 from selenium.webdriver.remote.webelement import WebElement
-from Selenium2Library.keywords import _FormElementKeywords
+from SeleniumLibrary.keywords import FormElementKeywords
 
 
 class ExtendedFormElementTests(unittest.TestCase):
@@ -35,9 +35,10 @@ class ExtendedFormElementTests(unittest.TestCase):
 
     def setUp(self):
         """Instantiate the extended form element class."""
+        ctx = mock.Mock()
         self.driver = mock.Mock()
         self.driver.session_id = 'session'
-        self.element = ExtendedFormElementKeywords()
+        self.element = ExtendedFormElementKeywords(ctx)
         # pylint: disable=protected-access
         self.element._info = mock.Mock()
         self.element._wait_until_page_ready = mock.Mock()
@@ -49,7 +50,7 @@ class ExtendedFormElementTests(unittest.TestCase):
 
     def test_should_inherit_keywords(self):
         """Extended form element instance should inherit Selenium2 form element instances."""
-        self.assertIsInstance(self.element, _FormElementKeywords)
+        self.assertIsInstance(self.element, FormElementKeywords)
 
     def test_should_click_input_button(self):
         """Should click an input button."""

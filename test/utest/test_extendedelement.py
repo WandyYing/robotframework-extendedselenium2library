@@ -24,10 +24,10 @@ Extended Selenium2 Library - a web testing library with AngularJS support.
 from sys import path
 path.append('src')
 import unittest
-import mock
-from ExtendedSelenium2Library.keywords import ExtendedElementKeywords
+from unittest import mock
+from ExtendedSeleniumLibrary.keywords import ExtendedElementKeywords
 from selenium.webdriver.remote.webelement import WebElement
-from Selenium2Library.keywords import _ElementKeywords
+from SeleniumLibrary.keywords import ElementKeywords
 
 
 class ExtendedElementTests(unittest.TestCase):
@@ -35,9 +35,10 @@ class ExtendedElementTests(unittest.TestCase):
 
     def setUp(self):
         """Instantiate the extended element class."""
+        ctx = mock.Mock()
         self.driver = mock.Mock()
         self.driver.session_id = 'session'
-        self.element = ExtendedElementKeywords()
+        self.element = ExtendedElementKeywords(ctx)
         # pylint: disable=protected-access
         self.element._current_browser = mock.Mock()
         self.element._info = mock.Mock()
@@ -50,7 +51,7 @@ class ExtendedElementTests(unittest.TestCase):
 
     def test_should_inherit_keywords(self):
         """Extended element instance should inherit Selenium2 element instances."""
-        self.assertIsInstance(self.element, _ElementKeywords)
+        self.assertIsInstance(self.element, ElementKeywords)
 
     def test_should_click_element(self):
         """Should click an element."""
@@ -74,7 +75,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.web_element.click.assert_called_with()
         self.assertFalse(self.element._wait_until_page_ready.called)
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedelement.ActionChains")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedelement.ActionChains")
     def test_should_click_element_at_coordinates(self, mock_action_chains):
         """Should click an element at given coordinates."""
         # pylint: disable=protected-access
@@ -95,7 +96,7 @@ class ExtendedElementTests(unittest.TestCase):
         click.perform.assert_called_with()
         self.element._wait_until_page_ready.assert_called_with()
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedelement.ActionChains")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedelement.ActionChains")
     def test_should_click_el_at_coords_and_skip_ready(self, mock_action_chains):
         """Should click an element at given coordinates with skip_ready."""
         # pylint: disable=protected-access
@@ -190,7 +191,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.web_element.click.assert_called_with()
         self.assertFalse(self.element._wait_until_page_ready.called)
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedelement.ActionChains")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedelement.ActionChains")
     def test_should_double_click_element(self, mock_action_chains):
         """Should double click an element."""
         # pylint: disable=protected-access
@@ -206,7 +207,7 @@ class ExtendedElementTests(unittest.TestCase):
         double_click.perform.assert_called_with()
         self.element._wait_until_page_ready.assert_called_with()
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedelement.ActionChains")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedelement.ActionChains")
     def test_should_double_click_element_and_skip_ready(self, mock_action_chains):
         """Should double click an element with skip ready."""
         # pylint: disable=protected-access
@@ -306,7 +307,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.assertFalse(self.element.is_element_visible(self.locator))
         self.element._is_visible.assert_called_with(self.locator)
 
-    @mock.patch("ExtendedSelenium2Library.keywords.extendedelement.logger")
+    @mock.patch("ExtendedSeleniumLibrary.keywords.extendedelement.logger")
     def test_scroll_element_into_view(self, mock_logger):
         """Scroll element into view."""
         # pylint: disable=protected-access

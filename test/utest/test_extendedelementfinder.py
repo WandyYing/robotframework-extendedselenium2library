@@ -24,10 +24,10 @@ Extended Selenium2 Library - a web testing library with AngularJS support.
 from sys import path
 path.append('src')
 import unittest
-import mock
-from ExtendedSelenium2Library.locators import ExtendedElementFinder
+from unittest import mock
+from ExtendedSeleniumLibrary.locators import ExtendedElementFinder
 from selenium.webdriver.remote.webelement import WebElement
-from Selenium2Library.locators import ElementFinder
+from SeleniumLibrary.locators import ElementFinder
 
 
 class ExtendedElementFinderTests(unittest.TestCase):
@@ -35,14 +35,15 @@ class ExtendedElementFinderTests(unittest.TestCase):
 
     def setUp(self):
         """Instantiate the extended element finder class."""
-        self.default_strategies = ['binding', 'button', 'css', 'default', 'dom',
+        ctx = mock.Mock()
+        self.default_strategies = ['binding', 'button', 'class', 'css', 'default', 'dom',
                                    'id', 'identifier', 'jquery', 'link', 'model',
                                    'name', 'options', 'partial binding',
                                    'partial button', 'partial link', 'scLocator',
                                    'sizzle', 'tag', 'xpath']
         self.driver = mock.Mock()
         self.driver.session_id = 'session'
-        self.finder = ExtendedElementFinder()
+        self.finder = ExtendedElementFinder(ctx)
         self.finder._filter_elements = mock.Mock()
         self.finder._find_by_css_selector = mock.Mock()
         self.finder.BUTTON_TEXT_WRAPPER = 'return buttons;%(handler)s'

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Extended Selenium2 Library - a web testing library with AngularJS support.
+#    Extended Selenium 3 Library - a web testing library with AngularJS support.
 #    Copyright (c) 2015, 2016 Richard Huang <rickypc@users.noreply.github.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,10 +18,11 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Extended Selenium2 Library - a web testing library with AngularJS support.
+Extended Selenium 3 Library - a web testing library with AngularJS support.
 """
 
-from Selenium2Library.locators import ElementFinder
+from SeleniumLibrary.locators import ElementFinder
+from SeleniumLibrary.locators.customlocator import CustomLocator
 
 
 class ExtendedElementFinder(ElementFinder):
@@ -37,8 +38,8 @@ class ExtendedElementFinder(ElementFinder):
                          "function(item){var binding=angular.element(item).data('$binding');" \
                          "if(binding){var name=binding.exp||binding[0].exp||binding;%(handler)s}})"
 
-    def __init__(self):
-        ElementFinder.__init__(self)
+    def __init__(self, ctx):
+        ElementFinder.__init__(self, ctx)
         strategies = {
             'binding': self._find_by_ng_binding,
             'button': self._find_by_button_text,

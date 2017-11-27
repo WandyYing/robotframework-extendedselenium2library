@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Extended Selenium2 Library - a web testing library with AngularJS support.
+#    Extended Selenium 3 Library - a web testing library with AngularJS support.
 #    Copyright (c) 2015, 2016 Richard Huang <rickypc@users.noreply.github.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,22 +18,24 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Extended Selenium2 Library - a web testing library with AngularJS support.
+Extended Selenium 3 Library - a web testing library with AngularJS support.
 """
 
 from robot.api import logger
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webelement import WebElement
-from Selenium2Library.keywords import _ElementKeywords
-from ExtendedSelenium2Library.locators import ExtendedElementFinder
+from SeleniumLibrary.keywords import ElementKeywords
+from ExtendedSeleniumLibrary.locators import ExtendedElementFinder
+from ExtendedSeleniumLibrary.keywords.extendedwaiting import ExtendedWaitingKeywords
 
-
-class ExtendedElementKeywords(_ElementKeywords):
+class ExtendedElementKeywords(ElementKeywords):
     """ExtendedElementKeywords are web element execution in the requested browser."""
 
-    def __init__(self):
-        super(ExtendedElementKeywords, self).__init__()
-        self._element_finder = ExtendedElementFinder()
+    def __init__(self, ctx):
+        super(ExtendedElementKeywords, self).__init__(ctx)
+        # ElementKeywords.__init__(self, ctx)
+        # self.element_finder = ExtendedElementFinder(ctx)
+        self._wait_until_page_ready = ExtendedWaitingKeywords(ctx)._wait_until_page_ready
 
     # pylint: disable=arguments-differ
     def click_element(self, locator, skip_ready=False):

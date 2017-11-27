@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#    Extended Selenium2 Library - a web testing library with AngularJS support.
+#    Extended Selenium 3 Library - a web testing library with AngularJS support.
 #    Copyright (c) 2015, 2016 Richard Huang <rickypc@users.noreply.github.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Extended Selenium2 Library - a web testing library with AngularJS support.
+Extended Selenium 3 Library - a web testing library with AngularJS support.
 """
 
 from sys import exc_info
@@ -28,15 +28,15 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.expected_conditions import staleness_of, visibility_of
 from selenium.webdriver.support.ui import WebDriverWait
-from Selenium2Library.keywords import _WaitingKeywords
-from ExtendedSelenium2Library.decorators import inherit_docs
+from SeleniumLibrary.keywords import WaitingKeywords
+from ExtendedSeleniumLibrary.decorators import inherit_docs
 
 
 @inherit_docs
-class ExtendedWaitingKeywords(_WaitingKeywords):
+class ExtendedWaitingKeywords(WaitingKeywords):
     """ExtendedWaitingKeywords are waiting related execution towards the requested browser."""
-    def __init__(self):
-        super(ExtendedWaitingKeywords, self).__init__()
+    def __init__(self, ctx):
+        super(ExtendedWaitingKeywords, self).__init__(ctx)
 
     def fast_wait_until_page_contains(self, text, excludes=None, timeout=None, error=None):
         """Waits until ``text`` appears on current page.
