@@ -83,7 +83,7 @@ class ExtendedElementKeywords(ElementKeywords):
                    (locator, xoffset, yoffset))
         element = self._get_element_and_scroll_into_view_on_iexplore(locator)
         # pylint: disable=no-member
-        ActionChains(self._current_browser()).move_to_element(element). \
+        ActionChains(self.driver).move_to_element(element). \
             move_by_offset(xoffset, yoffset).click().perform()
         if not skip_ready:
             # pylint: disable=no-member
@@ -153,7 +153,7 @@ class ExtendedElementKeywords(ElementKeywords):
         self.info("Double clicking element '%s'." % locator)
         element = self._get_element_and_scroll_into_view_on_iexplore(locator)
         # pylint: disable=no-member
-        ActionChains(self._current_browser()).double_click(element).perform()
+        ActionChains(self.driver).double_click(element).perform()
         if not skip_ready:
             # pylint: disable=no-member
             self._wait_until_page_ready()
@@ -234,13 +234,13 @@ class ExtendedElementKeywords(ElementKeywords):
             element = self.find_element(locator, required=True)
         script = 'arguments[0].scrollIntoView()'
         # pylint: disable=no-member
-        self._current_browser().execute_script(script, element)
+        self.driver.execute_script(script, element)
         return element
 
     def _get_browser_name(self):
         """Returns current browser name."""
         # pylint: disable=no-member
-        return self._current_browser().capabilities['browserName'].strip().lower()
+        return self.driver.capabilities['browserName'].strip().lower()
 
     def _get_element_and_scroll_into_view_on_iexplore(self, locator, required=True, tag=None):
         """Scrolls a target element into view. (Internet Explorer only)."""

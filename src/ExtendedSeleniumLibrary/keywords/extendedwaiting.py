@@ -105,7 +105,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
             error = "Condition '%s' did not become true in %s" % \
                 (condition, self._format_timeout(timeout))
         # pylint: disable=no-member
-        WebDriverWait(self._current_browser(), timeout, self._inputs['poll_frequency']).\
+        WebDriverWait(self.driver, timeout, self._inputs['poll_frequency']).\
             until(lambda driver: driver.execute_async_script(condition), error)
 
     @keyword
@@ -195,7 +195,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
                                     'handler': 'function(){cb(true)}',
                                     'suffix': '}else{cb(true)}'}
         # pylint: disable=no-member
-        browser = self._current_browser()
+        browser = self.driver
         browser.set_script_timeout(timeout)
         # pylint: disable=bare-except
         try:
@@ -405,7 +405,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
         if not self._inputs['block_until_page_ready']:
             return responses
         # pylint: disable=no-member
-        browser = kwargs.pop('browser', self._current_browser())
+        browser = kwargs.pop('browser', self.driver)
         locator_position = int(kwargs.pop('locator_position', 0))
         prefix = kwargs.pop('prefix', 'var cb=arguments[arguments.length-1];if(window.angular){')
         skip_stale_check = bool(kwargs.pop('skip_stale_check', False))

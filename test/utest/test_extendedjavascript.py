@@ -55,15 +55,15 @@ class ExtendedJavascriptTests(unittest.TestCase):
         self.script._get_javascript_to_execute.return_value = self.js_code_vars
         self.script._replace_variables_in_javascript_code = mock.Mock()
         self.script._replace_variables_in_javascript_code.return_value = self.js_code
-        self.script._current_browser().execute_async_script = mock.Mock()
-        self.script._current_browser().execute_async_script.return_value = True
+        self.script.driver.execute_async_script = mock.Mock()
+        self.script.driver.execute_async_script.return_value = True
         self.assertTrue(self.script.
                         execute_async_javascript_with_replaced_variables(self.js_code_vars))
         self.script._get_javascript_to_execute.assert_called_with(self.js_code_vars)
         self.script._replace_variables_in_javascript_code.assert_called_with(self.js_code_vars)
         self.script.debug.assert_called_with('Executing Asynchronous JavaScript:\n%s' %
                                               self.js_code)
-        self.script._current_browser().execute_async_script.assert_called_with(self.js_code)
+        self.script.driver.execute_async_script.assert_called_with(self.js_code)
 
     def test_execute_js_with_replaced_vars(self):
         """Should execute js with replaced vars."""
@@ -72,22 +72,22 @@ class ExtendedJavascriptTests(unittest.TestCase):
         self.script._get_javascript_to_execute.return_value = self.js_code_vars
         self.script._replace_variables_in_javascript_code = mock.Mock()
         self.script._replace_variables_in_javascript_code.return_value = self.js_code
-        self.script._current_browser().execute_script = mock.Mock()
-        self.script._current_browser().execute_script.return_value = True
+        self.script.driver.execute_script = mock.Mock()
+        self.script.driver.execute_script.return_value = True
         self.assertTrue(self.script.
                         execute_javascript_with_replaced_variables(self.js_code_vars))
         self.script._get_javascript_to_execute.assert_called_with(self.js_code_vars)
         self.script._replace_variables_in_javascript_code.assert_called_with(self.js_code_vars)
         self.script.debug.assert_called_with('Executing JavaScript:\n%s' % self.js_code)
-        self.script._current_browser().execute_script.assert_called_with(self.js_code)
+        self.script.driver.execute_script.assert_called_with(self.js_code)
 
     def test_get_screen_size(self):
         """Should return the screen size."""
         # pylint: disable=protected-access
-        self.script._current_browser().execute_script = mock.Mock()
-        self.script._current_browser().execute_script.return_value = [0, 0]
+        self.script.driver.execute_script = mock.Mock()
+        self.script.driver.execute_script.return_value = [0, 0]
         self.assertEqual(self.script.get_screen_size(), [0, 0])
-        self.script._current_browser().execute_script.\
+        self.script.driver.execute_script.\
             assert_called_with('return [screen.width, screen.height]')
 
     def test_warn_any_js_errors(self):

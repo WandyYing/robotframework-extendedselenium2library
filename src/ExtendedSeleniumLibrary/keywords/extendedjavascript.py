@@ -73,7 +73,7 @@ class ExtendedJavascriptKeywords(JavaScriptKeywords):
         # pylint: disable=no-member
         self.debug('Executing Asynchronous JavaScript:\n%s' % js_code)
         # pylint: disable=no-member
-        return self._current_browser().execute_async_script(js_code)
+        return self.driver.execute_async_script(js_code)
 
     @keyword
     def execute_javascript_with_replaced_variables(self, *code):
@@ -111,7 +111,7 @@ class ExtendedJavascriptKeywords(JavaScriptKeywords):
         # pylint: disable=no-member
         self.debug('Executing JavaScript:\n%s' % js_code)
         # pylint: disable=no-member
-        return self._current_browser().execute_script(js_code)
+        return self.driver.execute_script(js_code)
 
     @keyword
     def get_screen_size(self):
@@ -121,7 +121,7 @@ class ExtendedJavascriptKeywords(JavaScriptKeywords):
         | ${width} | ${height} = | Get Screen Size |
         """
         # pylint: disable=no-member
-        return self._current_browser().execute_script('return [screen.width, screen.height]')
+        return self.driver.execute_script('return [screen.width, screen.height]')
 
     @keyword
     def warn_any_javascript_errors(self, excludes=None, label=''):

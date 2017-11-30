@@ -85,8 +85,8 @@ class ExtendedElementTests(unittest.TestCase):
         self.element.info.assert_called_with("Clicking element '%s' in coordinates '%s', '%s'." %
                                               (self.locator, 0, 0))
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
-        mock_action_chains.assert_called_with(self.element._current_browser())
-        action_chains = mock_action_chains(self.element._current_browser())
+        mock_action_chains.assert_called_with(self.element.driver)
+        action_chains = mock_action_chains(self.element.driver)
         action_chains.move_to_element.assert_called_with(self.web_element)
         move_to_element = action_chains.move_to_element(self.web_element)
         move_to_element.move_by_offset.assert_called_with(0, 0)
@@ -106,8 +106,8 @@ class ExtendedElementTests(unittest.TestCase):
         self.element.info.assert_called_with("Clicking element '%s' in coordinates '%s', '%s'." %
                                               (self.locator, 0, 0))
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
-        mock_action_chains.assert_called_with(self.element._current_browser())
-        action_chains = mock_action_chains(self.element._current_browser())
+        mock_action_chains.assert_called_with(self.element.driver)
+        action_chains = mock_action_chains(self.element.driver)
         action_chains.move_to_element.assert_called_with(self.web_element)
         move_to_element = action_chains.move_to_element(self.web_element)
         move_to_element.move_by_offset.assert_called_with(0, 0)
@@ -200,8 +200,8 @@ class ExtendedElementTests(unittest.TestCase):
         self.element.double_click_element(self.locator)
         self.element.info.assert_called_with("Double clicking element '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
-        mock_action_chains.assert_called_with(self.element._current_browser())
-        action_chains = mock_action_chains(self.element._current_browser())
+        mock_action_chains.assert_called_with(self.element.driver)
+        action_chains = mock_action_chains(self.element.driver)
         action_chains.double_click.assert_called_with(self.web_element)
         double_click = action_chains.double_click(self.web_element)
         double_click.perform.assert_called_with()
@@ -216,8 +216,8 @@ class ExtendedElementTests(unittest.TestCase):
         self.element.double_click_element(self.locator, True)
         self.element.info.assert_called_with("Double clicking element '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
-        mock_action_chains.assert_called_with(self.element._current_browser())
-        action_chains = mock_action_chains(self.element._current_browser())
+        mock_action_chains.assert_called_with(self.element.driver)
+        action_chains = mock_action_chains(self.element.driver)
         action_chains.double_click.assert_called_with(self.web_element)
         double_click = action_chains.double_click(self.web_element)
         double_click.perform.assert_called_with()
@@ -311,34 +311,34 @@ class ExtendedElementTests(unittest.TestCase):
     def test_scroll_element_into_view(self, mock_logger):
         """Scroll element into view."""
         # pylint: disable=protected-access
-        self.element._current_browser().execute_script = mock.Mock()
+        self.element.driver.execute_script = mock.Mock()
         self.element.find_element = mock.Mock()
         self.element.find_element.return_value = self.web_element
         self.assertEqual(self.element.scroll_element_into_view(self.locator),
                          self.web_element)
         mock_logger.info.assert_called_with("Scrolling element '%s' into view." % self.locator)
         self.element.find_element.assert_called_with(self.locator, required=True)
-        self.element._current_browser().\
+        self.element.driver.\
             execute_script.assert_called_with('arguments[0].scrollIntoView()',
                                               self.web_element)
 
     def test_scroll_element_into_view_with_web_element(self):
         """Scroll element into view with web element."""
         # pylint: disable=protected-access
-        self.element._current_browser().execute_script = mock.Mock()
+        self.element.driver.execute_script = mock.Mock()
         self.element.find_element = mock.Mock()
         self.assertEqual(self.element.scroll_element_into_view(self.web_element),
                          self.web_element)
         self.assertFalse(self.element.info.called)
         self.assertFalse(self.element.find_element.called)
-        self.element._current_browser().\
+        self.element.driver.\
             execute_script.assert_called_with('arguments[0].scrollIntoView()',
                                               self.web_element)
 
     def test_get_browser_name(self):
         """Should return browser name."""
         # pylint: disable=protected-access
-        self.element._current_browser().capabilities = {'browserName': 'chrome'}
+        self.element.driver.capabilities = {'browserName': 'chrome'}
         self.assertEqual(self.element._get_browser_name(), 'chrome')
 
     def test_get_element_and_scroll_into_view_on_iexplore(self):

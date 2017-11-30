@@ -182,7 +182,7 @@ class ExtendedSeleniumLibrary(SeleniumLibrary):
         self._page_ready_keyword_list = []
         # pylint: disable=protected-access
         # self.table_element_finder.element_finder = self.element_finder
-        self.element_finder = self.element_finder
+        # self.element_finder = self.element_finder
 
     def get_browser_logs(self):
         """Returns the Javascript console logs from the browser. (Non Internet Explorer only).
@@ -194,7 +194,7 @@ class ExtendedSeleniumLibrary(SeleniumLibrary):
         | Get Browser Logs |
         """
         # IEDriverServer doesn't have log implementation yet
-        return [] if self._is_internet_explorer() else self._current_browser().get_log('browser')
+        return [] if self._is_internet_explorer() else self.driver.get_log('browser')
 
     def get_location(self):
         # AngularJS support
@@ -203,10 +203,10 @@ class ExtendedSeleniumLibrary(SeleniumLibrary):
                                                timeout=self._implicit_wait_in_secs)['response']
         # retry with sync approach
         if response is None:
-            response = self.driver().execute_script('return location.href')
+            response = self.driver.execute_script('return location.href')
         # fallback
         if response is None:
-            response = self.driver().get_current_url()
+            response = self.driver.get_current_url()
         return response
 
     # pylint: disable=arguments-differ
