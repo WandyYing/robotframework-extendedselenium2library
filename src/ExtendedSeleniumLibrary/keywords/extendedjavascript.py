@@ -23,13 +23,14 @@ Extended Selenium 3 Library - a web testing library with AngularJS support.
 
 from re import sub
 from SeleniumLibrary.keywords import JavaScriptKeywords
-
+from SeleniumLibrary.base import keyword
 
 class ExtendedJavascriptKeywords(JavaScriptKeywords):
     """ExtendedJavascriptKeywords are JavaScript related execution in the requested browser."""
     def __init__(self, ctx):
         super(ExtendedJavascriptKeywords, self).__init__(ctx)
 
+    @keyword
     def execute_async_javascript_with_replaced_variables(self, *code):
         # pylint: disable=line-too-long
         """Replace variables and executes asynchronous the given JavaScript ``code``.
@@ -70,10 +71,11 @@ class ExtendedJavascriptKeywords(JavaScriptKeywords):
         js_code = self._get_javascript_to_execute(''.join(code))
         js_code = self._replace_variables_in_javascript_code(js_code)
         # pylint: disable=no-member
-        self._debug('Executing Asynchronous JavaScript:\n%s' % js_code)
+        self.debug('Executing Asynchronous JavaScript:\n%s' % js_code)
         # pylint: disable=no-member
         return self._current_browser().execute_async_script(js_code)
 
+    @keyword
     def execute_javascript_with_replaced_variables(self, *code):
         # pylint: disable=line-too-long
         """Replace variables and executes the given JavaScript ``code``.
@@ -107,10 +109,11 @@ class ExtendedJavascriptKeywords(JavaScriptKeywords):
         js_code = self._get_javascript_to_execute(''.join(code))
         js_code = self._replace_variables_in_javascript_code(js_code)
         # pylint: disable=no-member
-        self._debug('Executing JavaScript:\n%s' % js_code)
+        self.debug('Executing JavaScript:\n%s' % js_code)
         # pylint: disable=no-member
         return self._current_browser().execute_script(js_code)
 
+    @keyword
     def get_screen_size(self):
         """Returns current screen size as `width` and `height`.
 
@@ -120,6 +123,7 @@ class ExtendedJavascriptKeywords(JavaScriptKeywords):
         # pylint: disable=no-member
         return self._current_browser().execute_script('return [screen.width, screen.height]')
 
+    @keyword
     def warn_any_javascript_errors(self, excludes=None, label=''):
         """Log any JavaScript errors in the page as warning in the test report.
 

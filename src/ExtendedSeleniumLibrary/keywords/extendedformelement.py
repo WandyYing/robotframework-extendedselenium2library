@@ -22,7 +22,7 @@ Extended Selenium 3 Library - a web testing library with AngularJS support.
 """
 
 from SeleniumLibrary.keywords import FormElementKeywords
-
+from SeleniumLibrary.base import keyword
 
 class ExtendedFormElementKeywords(FormElementKeywords):
     """ExtendedFormElementKeywords are form element execution in the requested browser."""
@@ -31,6 +31,7 @@ class ExtendedFormElementKeywords(FormElementKeywords):
         super(ExtendedFormElementKeywords, self).__init__(ctx)
 
     # pylint: disable=arguments-differ
+    @keyword
     def click_button(self, locator, skip_ready=False):
         """Clicks a button identified by ``locator``.
 
@@ -45,7 +46,7 @@ class ExtendedFormElementKeywords(FormElementKeywords):
         | Click Button | css=button.class | True |
         """
         # pylint: disable=no-member
-        self._info("Clicking button '%s'." % locator)
+        self.info("Clicking button '%s'." % locator)
         # pylint: disable=no-member
         element = self._get_element_and_scroll_into_view_on_iexplore(locator, False, 'input')
         if element is None:
@@ -56,6 +57,7 @@ class ExtendedFormElementKeywords(FormElementKeywords):
             # pylint: disable=no-member
             self._wait_until_page_ready()
 
+    @keyword
     def select_checkbox(self, locator):
         """Selects checkbox identified by ``locator``.
         Does nothing if checkbox is already selected.
@@ -69,11 +71,12 @@ class ExtendedFormElementKeywords(FormElementKeywords):
         | Select Checkbox | css=input[type="checkbox"] |
         """
         # pylint: disable=no-member
-        self._info("Selecting checkbox '%s'." % locator)
+        self.info("Selecting checkbox '%s'." % locator)
         element = self._get_checkbox(locator)
         if not element.is_selected():
             self._select_checkbox_or_radio_button(locator)
 
+    @keyword
     def select_radio_button(self, group_name, value):
         """Sets selection of radio button group identified by ``group_name`` to ``value``.
         The XPath used to locate the correct radio button and it looks like this:
@@ -90,13 +93,14 @@ class ExtendedFormElementKeywords(FormElementKeywords):
         | Select Radio Button | size | sizeXL |
         """
         # pylint: disable=no-member
-        self._info("Selecting '%s' from radio button '%s'." % (value, group_name))
+        self.info("Selecting '%s' from radio button '%s'." % (value, group_name))
         element = self._get_radio_button_with_value(group_name, value)
         if not element.is_selected():
             self._select_checkbox_or_radio_button('css=input[name="%s"][value="%s"]' %
                                                   (group_name, value))
 
     # pylint: disable=arguments-differ
+    @keyword
     def submit_form(self, locator=None, skip_ready=False):
         """Submits a form identified by `locator`.
 
@@ -114,7 +118,7 @@ class ExtendedFormElementKeywords(FormElementKeywords):
         if not locator:
             locator = 'xpath=//form'
         # pylint: disable=no-member
-        self._info("Submitting form '%s'." % locator)
+        self.info("Submitting form '%s'." % locator)
         # pylint: disable=no-member
         self._get_element_and_scroll_into_view_on_iexplore(locator, tag='form').submit()
         if not skip_ready:
@@ -125,7 +129,7 @@ class ExtendedFormElementKeywords(FormElementKeywords):
     def _input_text_into_text_field(self, locator, text, skip_ready=False):
         """Send keys to text field with AngularJS synchronization."""
         # pylint: disable=no-member
-        element = self._element_find(locator, True, True)
+        element = self.find_element(locator, required=True)
         element.clear()
         element.send_keys(text)
         if not skip_ready:

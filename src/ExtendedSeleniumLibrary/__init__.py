@@ -182,7 +182,7 @@ class ExtendedSeleniumLibrary(SeleniumLibrary):
         self._page_ready_keyword_list = []
         # pylint: disable=protected-access
         # self.table_element_finder.element_finder = self.element_finder
-        # self.element_finder = self._element_finder
+        self.element_finder = self.element_finder
 
     def get_browser_logs(self):
         """Returns the Javascript console logs from the browser. (Non Internet Explorer only).

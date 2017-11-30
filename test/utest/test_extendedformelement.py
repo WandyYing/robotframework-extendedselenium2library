@@ -40,7 +40,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.driver.session_id = 'session'
         self.element = ExtendedFormElementKeywords(ctx)
         # pylint: disable=protected-access
-        self.element._info = mock.Mock()
+        self.element.info = mock.Mock()
         self.element._wait_until_page_ready = mock.Mock()
         self.group_name = 'group'
         self.locator = 'css=.selector'
@@ -58,7 +58,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_button(self.locator)
-        self.element._info.assert_called_with("Clicking button '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking button '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, False, 'input')
         self.web_element.click.assert_called_with()
@@ -70,7 +70,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_button(self.locator, True)
-        self.element._info.assert_called_with("Clicking button '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking button '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, False, 'input')
         self.web_element.click.assert_called_with()
@@ -83,7 +83,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             side_effect = [None, self.web_element]
         self.element.click_button(self.locator)
-        self.element._info.assert_called_with("Clicking button '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking button '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, True, 'button')
         self.web_element.click.assert_called_with()
@@ -96,7 +96,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             side_effect = [None, self.web_element]
         self.element.click_button(self.locator, True)
-        self.element._info.assert_called_with("Clicking button '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking button '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, True, 'button')
         self.web_element.click.assert_called_with()
@@ -111,7 +111,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.web_element.is_selected = mock.Mock()
         self.web_element.is_selected.return_value = False
         self.element.select_checkbox(self.locator)
-        self.element._info.assert_called_with("Selecting checkbox '%s'." % self.locator)
+        self.element.info.assert_called_with("Selecting checkbox '%s'." % self.locator)
         self.element._get_checkbox.assert_called_with(self.locator)
         self.web_element.is_selected.assert_called_with()
         self.element._select_checkbox_or_radio_button.assert_called_with(self.locator)
@@ -125,7 +125,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.web_element.is_selected = mock.Mock()
         self.web_element.is_selected.return_value = True
         self.element.select_checkbox(self.locator)
-        self.element._info.assert_called_with("Selecting checkbox '%s'." % self.locator)
+        self.element.info.assert_called_with("Selecting checkbox '%s'." % self.locator)
         self.element._get_checkbox.assert_called_with(self.locator)
         self.web_element.is_selected.assert_called_with()
         self.assertFalse(self.element._select_checkbox_or_radio_button.called)
@@ -139,7 +139,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.web_element.is_selected = mock.Mock()
         self.web_element.is_selected.return_value = False
         self.element.select_radio_button(self.group_name, self.value)
-        self.element._info.assert_called_with("Selecting '%s' from radio button '%s'." %
+        self.element.info.assert_called_with("Selecting '%s' from radio button '%s'." %
                                               (self.value, self.group_name))
         self.element._get_radio_button_with_value.assert_called_with(self.group_name, self.value)
         self.web_element.is_selected.assert_called_with()
@@ -155,7 +155,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.web_element.is_selected = mock.Mock()
         self.web_element.is_selected.return_value = True
         self.element.select_radio_button(self.group_name, self.value)
-        self.element._info.assert_called_with("Selecting '%s' from radio button '%s'." %
+        self.element.info.assert_called_with("Selecting '%s' from radio button '%s'." %
                                               (self.value, self.group_name))
         self.element._get_radio_button_with_value.assert_called_with(self.group_name, self.value)
         self.web_element.is_selected.assert_called_with()
@@ -168,7 +168,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.web_element.submit = mock.Mock()
         self.element.submit_form(self.locator)
-        self.element._info.assert_called_with("Submitting form '%s'." % self.locator)
+        self.element.info.assert_called_with("Submitting form '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore(self.locator, tag='form')
         self.web_element.submit.assert_called_with()
         self.element._wait_until_page_ready.assert_called_with()
@@ -180,7 +180,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.web_element.submit = mock.Mock()
         self.element.submit_form(self.locator, skip_ready=True)
-        self.element._info.assert_called_with("Submitting form '%s'." % self.locator)
+        self.element.info.assert_called_with("Submitting form '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore(self.locator, tag='form')
         self.web_element.submit.assert_called_with()
         self.assertFalse(self.element._wait_until_page_ready.called)
@@ -193,7 +193,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.web_element.submit = mock.Mock()
         self.element.submit_form()
-        self.element._info.assert_called_with("Submitting form '%s'." % locator)
+        self.element.info.assert_called_with("Submitting form '%s'." % locator)
         self.element._get_element_and_scroll_into_view_on_iexplore(locator, tag='form')
         self.web_element.submit.assert_called_with()
         self.element._wait_until_page_ready.assert_called_with()
@@ -206,7 +206,7 @@ class ExtendedFormElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.web_element.submit = mock.Mock()
         self.element.submit_form(skip_ready=True)
-        self.element._info.assert_called_with("Submitting form '%s'." % locator)
+        self.element.info.assert_called_with("Submitting form '%s'." % locator)
         self.element._get_element_and_scroll_into_view_on_iexplore(locator, tag='form')
         self.web_element.submit.assert_called_with()
         self.assertFalse(self.element._wait_until_page_ready.called)
@@ -214,13 +214,13 @@ class ExtendedFormElementTests(unittest.TestCase):
     def test_should_fill_text_field(self):
         """Should fill text field."""
         # pylint: disable=protected-access
-        self.element._element_find = mock.Mock()
-        self.element._element_find.return_value = self.web_element
+        self.element.find_element = mock.Mock()
+        self.element.find_element.return_value = self.web_element
         self.element._element_trigger_change = mock.Mock()
         self.web_element.clear = mock.Mock()
         self.web_element.send_keys = mock.Mock()
         self.element._input_text_into_text_field(self.locator, self.value)
-        self.element._element_find(self.locator, True, True)
+        self.element.find_element(self.locator, required=True)
         self.web_element.clear.assert_called_with()
         self.web_element.send_keys.assert_called_with(self.value)
         self.element._element_trigger_change.assert_called_with(self.locator)
@@ -228,13 +228,13 @@ class ExtendedFormElementTests(unittest.TestCase):
     def test_should_fill_text_field_and_skip_ready(self):
         """Should fill text field with skip_ready."""
         # pylint: disable=protected-access
-        self.element._element_find = mock.Mock()
-        self.element._element_find.return_value = self.web_element
+        self.element.find_element = mock.Mock()
+        self.element.find_element.return_value = self.web_element
         self.element._element_trigger_change = mock.Mock()
         self.web_element.clear = mock.Mock()
         self.web_element.send_keys = mock.Mock()
         self.element._input_text_into_text_field(self.locator, self.value, True)
-        self.element._element_find(self.locator, True, True)
+        self.element.find_element(self.locator, required=True)
         self.web_element.clear.assert_called_with()
         self.web_element.send_keys.assert_called_with(self.value)
         self.assertFalse(self.element._element_trigger_change.called)

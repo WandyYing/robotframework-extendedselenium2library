@@ -41,7 +41,7 @@ class ExtendedJavascriptTests(unittest.TestCase):
         self.script = ExtendedJavascriptKeywords(ctx)
         # pylint: disable=protected-access
         self.script._current_browser = mock.Mock()
-        self.script._debug = mock.Mock()
+        self.script.debug = mock.Mock()
         self.script._warn = mock.Mock()
 
     def test_should_inherit_keywords(self):
@@ -61,7 +61,7 @@ class ExtendedJavascriptTests(unittest.TestCase):
                         execute_async_javascript_with_replaced_variables(self.js_code_vars))
         self.script._get_javascript_to_execute.assert_called_with(self.js_code_vars)
         self.script._replace_variables_in_javascript_code.assert_called_with(self.js_code_vars)
-        self.script._debug.assert_called_with('Executing Asynchronous JavaScript:\n%s' %
+        self.script.debug.assert_called_with('Executing Asynchronous JavaScript:\n%s' %
                                               self.js_code)
         self.script._current_browser().execute_async_script.assert_called_with(self.js_code)
 
@@ -78,7 +78,7 @@ class ExtendedJavascriptTests(unittest.TestCase):
                         execute_javascript_with_replaced_variables(self.js_code_vars))
         self.script._get_javascript_to_execute.assert_called_with(self.js_code_vars)
         self.script._replace_variables_in_javascript_code.assert_called_with(self.js_code_vars)
-        self.script._debug.assert_called_with('Executing JavaScript:\n%s' % self.js_code)
+        self.script.debug.assert_called_with('Executing JavaScript:\n%s' % self.js_code)
         self.script._current_browser().execute_script.assert_called_with(self.js_code)
 
     def test_get_screen_size(self):

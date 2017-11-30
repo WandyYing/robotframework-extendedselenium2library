@@ -41,7 +41,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element = ExtendedElementKeywords(ctx)
         # pylint: disable=protected-access
         self.element._current_browser = mock.Mock()
-        self.element._info = mock.Mock()
+        self.element.info = mock.Mock()
         self.element._wait_until_page_ready = mock.Mock()
         self.locator = 'css=.selector'
         self.locator_attribute = 'css=.selector@class'
@@ -59,7 +59,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_element(self.locator)
-        self.element._info.assert_called_with("Clicking element '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking element '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
         self.web_element.click.assert_called_with()
         self.element._wait_until_page_ready.assert_called_with()
@@ -70,7 +70,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_element(self.locator, True)
-        self.element._info.assert_called_with("Clicking element '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking element '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
         self.web_element.click.assert_called_with()
         self.assertFalse(self.element._wait_until_page_ready.called)
@@ -82,7 +82,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_element_at_coordinates(self.locator, 0, 0)
-        self.element._info.assert_called_with("Clicking element '%s' in coordinates '%s', '%s'." %
+        self.element.info.assert_called_with("Clicking element '%s' in coordinates '%s', '%s'." %
                                               (self.locator, 0, 0))
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
         mock_action_chains.assert_called_with(self.element._current_browser())
@@ -103,7 +103,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_element_at_coordinates(self.locator, 0, 0, True)
-        self.element._info.assert_called_with("Clicking element '%s' in coordinates '%s', '%s'." %
+        self.element.info.assert_called_with("Clicking element '%s' in coordinates '%s', '%s'." %
                                               (self.locator, 0, 0))
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
         mock_action_chains.assert_called_with(self.element._current_browser())
@@ -123,7 +123,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_image(self.locator)
-        self.element._info.assert_called_with("Clicking image '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking image '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, False, 'image')
         self.web_element.click.assert_called_with()
@@ -135,7 +135,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_image(self.locator, True)
-        self.element._info.assert_called_with("Clicking image '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking image '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, False, 'image')
         self.web_element.click.assert_called_with()
@@ -148,7 +148,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore.side_effect = \
             [None, self.web_element]
         self.element.click_image(self.locator)
-        self.element._info.assert_called_with("Clicking image '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking image '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, True, 'input')
         self.web_element.click.assert_called_with()
@@ -161,7 +161,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore.side_effect = \
             [None, self.web_element]
         self.element.click_image(self.locator, True)
-        self.element._info.assert_called_with("Clicking image '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking image '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, True, 'input')
         self.web_element.click.assert_called_with()
@@ -173,7 +173,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_link(self.locator)
-        self.element._info.assert_called_with("Clicking link '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking link '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, tag='a')
         self.web_element.click.assert_called_with()
@@ -185,7 +185,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.click_link(self.locator, True)
-        self.element._info.assert_called_with("Clicking link '%s'." % self.locator)
+        self.element.info.assert_called_with("Clicking link '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.\
             assert_called_with(self.locator, tag='a')
         self.web_element.click.assert_called_with()
@@ -198,7 +198,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.double_click_element(self.locator)
-        self.element._info.assert_called_with("Double clicking element '%s'." % self.locator)
+        self.element.info.assert_called_with("Double clicking element '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
         mock_action_chains.assert_called_with(self.element._current_browser())
         action_chains = mock_action_chains(self.element._current_browser())
@@ -214,7 +214,7 @@ class ExtendedElementTests(unittest.TestCase):
         self.element._get_element_and_scroll_into_view_on_iexplore = mock.Mock()
         self.element._get_element_and_scroll_into_view_on_iexplore.return_value = self.web_element
         self.element.double_click_element(self.locator, True)
-        self.element._info.assert_called_with("Double clicking element '%s'." % self.locator)
+        self.element.info.assert_called_with("Double clicking element '%s'." % self.locator)
         self.element._get_element_and_scroll_into_view_on_iexplore.assert_called_with(self.locator)
         mock_action_chains.assert_called_with(self.element._current_browser())
         action_chains = mock_action_chains(self.element._current_browser())
@@ -312,12 +312,12 @@ class ExtendedElementTests(unittest.TestCase):
         """Scroll element into view."""
         # pylint: disable=protected-access
         self.element._current_browser().execute_script = mock.Mock()
-        self.element._element_find = mock.Mock()
-        self.element._element_find.return_value = self.web_element
+        self.element.find_element = mock.Mock()
+        self.element.find_element.return_value = self.web_element
         self.assertEqual(self.element.scroll_element_into_view(self.locator),
                          self.web_element)
         mock_logger.info.assert_called_with("Scrolling element '%s' into view." % self.locator)
-        self.element._element_find.assert_called_with(self.locator, True, True)
+        self.element.find_element.assert_called_with(self.locator, required=True)
         self.element._current_browser().\
             execute_script.assert_called_with('arguments[0].scrollIntoView()',
                                               self.web_element)
@@ -326,11 +326,11 @@ class ExtendedElementTests(unittest.TestCase):
         """Scroll element into view with web element."""
         # pylint: disable=protected-access
         self.element._current_browser().execute_script = mock.Mock()
-        self.element._element_find = mock.Mock()
+        self.element.find_element = mock.Mock()
         self.assertEqual(self.element.scroll_element_into_view(self.web_element),
                          self.web_element)
-        self.assertFalse(self.element._info.called)
-        self.assertFalse(self.element._element_find.called)
+        self.assertFalse(self.element.info.called)
+        self.assertFalse(self.element.find_element.called)
         self.element._current_browser().\
             execute_script.assert_called_with('arguments[0].scrollIntoView()',
                                               self.web_element)
@@ -344,28 +344,28 @@ class ExtendedElementTests(unittest.TestCase):
     def test_get_element_and_scroll_into_view_on_iexplore(self):
         """Should scroll into view on internet explorer and returns the element."""
         # pylint: disable=protected-access
-        self.element._element_find = mock.Mock()
-        self.element._element_find.return_value = self.web_element
+        self.element.find_element = mock.Mock()
+        self.element.find_element.return_value = self.web_element
         self.element._is_internet_explorer = mock.Mock()
         self.element._is_internet_explorer.return_value = True
         self.element.scroll_element_into_view = mock.Mock()
         self.assertEqual(self.element._get_element_and_scroll_into_view_on_iexplore(self.locator),
                          self.web_element)
-        self.element._element_find.assert_called_with(self.locator, True, True, None)
+        self.element.find_element.assert_called_with(self.locator, None, True)
         self.element._is_internet_explorer.assert_called_with()
         self.element.scroll_element_into_view.assert_called_with(self.web_element)
 
     def test_get_el_and_not_scroll_on_non_iexplore(self):
         """Should not scroll into view on non internet explorer and returns element."""
         # pylint: disable=protected-access
-        self.element._element_find = mock.Mock()
-        self.element._element_find.return_value = self.web_element
+        self.element.find_element = mock.Mock()
+        self.element.find_element.return_value = self.web_element
         self.element._is_internet_explorer = mock.Mock()
         self.element._is_internet_explorer.return_value = False
         self.element.scroll_element_into_view = mock.Mock()
         self.assertEqual(self.element._get_element_and_scroll_into_view_on_iexplore(self.locator),
                          self.web_element)
-        self.element._element_find.assert_called_with(self.locator, True, True, None)
+        self.element.find_element.assert_called_with(self.locator, None, True)
         self.element._is_internet_explorer.assert_called_with()
         self.assertFalse(self.element.scroll_element_into_view.called)
 

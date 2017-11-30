@@ -22,7 +22,7 @@ Extended Selenium 3 Library - a web testing library with AngularJS support.
 """
 
 from SeleniumLibrary.keywords import SelectElementKeywords
-
+from SeleniumLibrary.base import keyword
 
 class ExtendedSelectElementKeywords(SelectElementKeywords):
     """ExtendedSelectElementKeywords are select element execution in the requested browser."""
@@ -30,6 +30,7 @@ class ExtendedSelectElementKeywords(SelectElementKeywords):
     def __init__(self, ctx):
         super(ExtendedSelectElementKeywords, self).__init__(ctx)
 
+    @keyword
     def select_all_from_list(self, locator):
         """Selects all values from multi-select list identified by ``locator``.
 
@@ -44,6 +45,7 @@ class ExtendedSelectElementKeywords(SelectElementKeywords):
         super(ExtendedSelectElementKeywords, self).select_all_from_list(locator)
         self._element_trigger_change(locator)
 
+    @keyword
     def select_from_list(self, locator, *items):
         """Selects ``*items`` from list identified by ``locator``
 
@@ -73,6 +75,7 @@ class ExtendedSelectElementKeywords(SelectElementKeywords):
         super(ExtendedSelectElementKeywords, self).select_from_list(locator, *items)
         self._element_trigger_change(locator)
 
+    @keyword
     def select_from_list_by_index(self, locator, *indexes):
         """Selects ``*indexes`` from list identified by ``locator``.
         Select list keywords work on both lists and combo boxes.
@@ -89,6 +92,7 @@ class ExtendedSelectElementKeywords(SelectElementKeywords):
         super(ExtendedSelectElementKeywords, self).select_from_list_by_index(locator, *indexes)
         self._element_trigger_change(locator)
 
+    @keyword
     def select_from_list_by_label(self, locator, *labels):
         """Selects ``*labels`` from list identified by ``locator``.
         Select list keywords work on both lists and combo boxes.
@@ -105,6 +109,7 @@ class ExtendedSelectElementKeywords(SelectElementKeywords):
         super(ExtendedSelectElementKeywords, self).select_from_list_by_label(locator, *labels)
         self._element_trigger_change(locator)
 
+    @keyword
     def select_from_list_by_value(self, locator, *values):
         """Selects ``*values`` from list identified by ``locator``.
         Select list keywords work on both lists and combo boxes.

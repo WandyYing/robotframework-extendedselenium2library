@@ -29,6 +29,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.expected_conditions import staleness_of, visibility_of
 from selenium.webdriver.support.ui import WebDriverWait
 from SeleniumLibrary.keywords import WaitingKeywords
+from SeleniumLibrary.base import keyword
 from ExtendedSeleniumLibrary.decorators import inherit_docs
 
 
@@ -38,6 +39,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
     def __init__(self, ctx):
         super(ExtendedWaitingKeywords, self).__init__(ctx)
 
+    @keyword
     def fast_wait_until_page_contains(self, text, excludes=None, timeout=None, error=None):
         """Waits until ``text`` appears on current page.
 
@@ -76,6 +78,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
         WebDriverWait(self, timeout, self._inputs['poll_frequency']).\
             until(lambda driver: driver._is_text_present(text), error)
 
+    @keyword
     def wait_for_async_condition(self, condition, timeout=None, error=None):
         """Waits until the given asynchronous ``condition`` is true or ``timeout`` expires.
 
@@ -105,6 +108,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
         WebDriverWait(self._current_browser(), timeout, self._inputs['poll_frequency']).\
             until(lambda driver: driver.execute_async_script(condition), error)
 
+    @keyword
     def wait_for_condition_with_replaced_variables(self, condition, timeout=None, error=None):
         """Replace variables and waits until the given ``condition`` is true or
         ``timeout`` expires.
@@ -139,6 +143,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
             until(lambda driver:
                   driver.execute_javascript_with_replaced_variables(condition) is True, error)
 
+    @keyword
     def wait_until_angular_ready(self, timeout=None, error=None):
         """Waits until [https://goo.gl/Kzz8Y3|AngularJS] is ready to process the next request or
         ``timeout`` expires.
@@ -200,7 +205,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
             # prevent double wait
             pass
         except:
-            self._debug(exc_info()[0])
+            self.debug(exc_info()[0])
             # still inflight, second chance. let the browser take a deep breath...
             sleep(self._inputs['browser_breath_delay'])
             try:
@@ -209,12 +214,13 @@ class ExtendedWaitingKeywords(WaitingKeywords):
             except:
                 # instead of halting the process because AngularJS is not ready
                 # in <TIMEOUT>, we try our luck...
-                self._debug(exc_info()[0])
+                self.debug(exc_info()[0])
             finally:
                 browser.set_script_timeout(self._timeout_in_secs)
         finally:
             browser.set_script_timeout(self._timeout_in_secs)
 
+    @keyword
     def wait_until_element_contains_attribute(self, attribute_locator, expected, timeout=None,
                                               error=None):
         """Waits until element attribute identified by ``attribute_locator``
@@ -249,6 +255,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
             until(lambda driver: expected in driver.get_element_attribute(attribute_locator),
                   error)
 
+    @keyword
     def wait_until_element_does_not_contain_attribute(self, attribute_locator, unexpected,
                                                       timeout=None, error=None):
         """Waits until element attribute identified by ``attribute_locator``
@@ -284,30 +291,33 @@ class ExtendedWaitingKeywords(WaitingKeywords):
                       error)
 
     # pylint: disable=missing-docstring
+    @keyword
     def wait_until_element_is_not_visible(self, locator, timeout=None, error=None):
         # pylint: disable=no-member
         timeout = self._get_timeout_value(timeout, self._implicit_wait_in_secs)
         if not error:
             error = 'Element \'%s\' was still visible after %s' % \
                 (locator, self._format_timeout(timeout))
-        element = self._element_find(locator, True, True)
+        element = self.find_element(locator, required=True)
         if element is None:
             raise AssertionError("Element '%s' not found." % locator)
         WebDriverWait(None, timeout, self._inputs['poll_frequency']).\
             until_not(visibility_of(element), error)
 
+    @keyword
     def wait_until_element_is_visible(self, locator, timeout=None, error=None):
         # pylint: disable=no-member
         timeout = self._get_timeout_value(timeout, self._implicit_wait_in_secs)
         if not error:
             error = 'Element \'%s\' was not visible in %s' % \
                 (locator, self._format_timeout(timeout))
-        element = self._element_find(locator, True, True)
+        element = self.find_element(locator, required=True)
         if element is None:
             raise AssertionError("Element '%s' not found." % locator)
         WebDriverWait(None, timeout, self._inputs['poll_frequency']).\
             until(visibility_of(element), error)
 
+    @keyword
     def wait_until_location_contains(self, expected, timeout=None, error=None):
         """Waits until current URL contains ``expected``.
         Fails if ``timeout`` expires before the ``expected`` URL presents on the page.
@@ -334,6 +344,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
         WebDriverWait(self, timeout, self._inputs['poll_frequency']).\
             until(lambda driver: expected in driver.get_location(), error)
 
+    @keyword
     def wait_until_location_does_not_contain(self, unexpected, timeout=None, error=None):
         """Waits until current URL does not contain ``unexpected``.
         Fails if ``timeout`` expires before the ``unexpected`` URL goes away from the page.
@@ -382,7 +393,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
             # instead of halting the process because document is not ready
             # in <TIMEOUT>, we try our luck...
             # pylint: disable=no-member
-            self._debug(exc_info()[0])
+            self.debug(exc_info()[0])
 
     def _wait_until_page_ready(self, *args, **kwargs):
         """Semi blocking API that incorporated different strategies for cross-browser support."""
@@ -415,7 +426,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
         timeout = self._get_timeout_value(kwargs.pop('timeout', None), default_timeout)
         if len(args) > locator_position and not isinstance(args[locator_position], WebElement):
             args = list(args)
-            args[locator_position] = self._element_find(args[locator_position], True, True)
+            args[locator_position] = self.element_find(args[locator_position], True, True)
         if not skip_stale_check:
             self._wait_until_html_ready(browser, timeout)
         responses['response'] = self._wait_until_script_ready(browser, timeout, script, *args)
@@ -437,7 +448,7 @@ class ExtendedWaitingKeywords(WaitingKeywords):
             # instead of halting the process because document is not ready
             # in <TIMEOUT>, we try our luck...
             # pylint: disable=no-member
-            self._debug(exc_info()[0])
+            self.debug(exc_info()[0])
         finally:
             if timeout != selenium_timeout:
                 # pylint: disable=no-member
